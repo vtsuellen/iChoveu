@@ -5,5 +5,4 @@ export const searchCities = (/* term */) => {
 };
 
 export const getWeatherByCity = (/* cityURL */) => {
-//   seu código aqui
 };
