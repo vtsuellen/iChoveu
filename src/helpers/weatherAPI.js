@@ -8,6 +8,6 @@ export const searchCities = async (term) => {
   return data;
 };
 
-export const getWeatherByCity = (cityURL) => {
-  
+export const getWeatherByCity = (/* cityURL */) => {
+  //   seu código aqui
 };
