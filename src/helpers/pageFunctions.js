@@ -119,5 +119,10 @@ export async function handleSearch(event) {
   const cities = await searchCities(searchValue);
 
   const cidades = await cities.map((city) => getWeatherByCity(city.url));
-  return cidades;
+
+  const promise = await Promise.all(cidades);
+  promise.forEach((obj) => {
+    const getID = document.getElementById('cities');
+    getID.appendChild(createCityElement(obj));
+  });
 }
