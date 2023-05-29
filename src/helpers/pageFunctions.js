@@ -1,5 +1,4 @@
-import { getWeatherByCity, searchCities } from './weatherAPI';
-
+import { getWeatherByCity, searchCities, seeForecast } from './weatherAPI';
 /**
  * Cria um elemento HTML com as informações passadas
  */
@@ -24,9 +23,17 @@ function createForecast(forecast) {
   const dateElement = createElement('p', 'forecast-weekday', weekdayName);
 
   const maxElement = createElement('span', 'forecast-temp max', 'max');
-  const maxTempElement = createElement('span', 'forecast-temp max', `${maxTemp}º`);
+  const maxTempElement = createElement(
+    'span',
+    'forecast-temp max',
+    `${maxTemp}º`,
+  );
   const minElement = createElement('span', 'forecast-temp min', 'min');
-  const minTempElement = createElement('span', 'forecast-temp min', `${minTemp}º`);
+  const minTempElement = createElement(
+    'span',
+    'forecast-temp min',
+    `${minTemp}º`,
+  );
   const tempContainer = createElement('div', 'forecast-temp-container');
   tempContainer.appendChild(maxElement);
   tempContainer.appendChild(minElement);
@@ -77,7 +84,7 @@ export function showForecast(forecastList) {
  * Recebe um objeto com as informações de uma cidade e retorna um elemento HTML
  */
 export function createCityElement(cityInfo) {
-  const { name, country, temp, condition, icon /* , url */ } = cityInfo;
+  const { name, country, temp, condition, icon, url } = cityInfo;
 
   const cityElement = createElement('li', 'city');
 
@@ -104,6 +111,17 @@ export function createCityElement(cityInfo) {
   cityElement.appendChild(headingElement);
   cityElement.appendChild(infoContainer);
 
+  const forecastButton = createElement(
+    'button',
+    'forecastButton',
+    'Ver previsão',
+  );
+  cityElement.appendChild(forecastButton);
+  forecastButton.addEventListener('click', async () => {
+    const forecast = await seeForecast(url);
+    console.log(forecast);
+    await showForecast(forecast);
+  });
   return cityElement;
 }
 
@@ -118,10 +136,10 @@ export async function handleSearch(event) {
   const searchValue = searchInput.value;
   const cities = await searchCities(searchValue);
 
-  const cidades = await cities.map((city) => getWeatherByCity(city.url));
-
-  const promise = await Promise.all(cidades);
-  promise.forEach((obj) => {
+  const sla = await Promise.all(
+    cities.map((city) => getWeatherByCity(city.url)),
+  );
+  sla.forEach((obj) => {
     const getID = document.getElementById('cities');
     getID.appendChild(createCityElement(obj));
   });
