@@ -119,7 +119,6 @@ export function createCityElement(cityInfo) {
   cityElement.appendChild(forecastButton);
   forecastButton.addEventListener('click', async () => {
     const forecast = await seeForecast(url);
-    console.log(forecast);
     await showForecast(forecast);
   });
   return cityElement;
@@ -136,10 +135,10 @@ export async function handleSearch(event) {
   const searchValue = searchInput.value;
   const cities = await searchCities(searchValue);
 
-  const sla = await Promise.all(
+  const teste = await Promise.all(
     cities.map((city) => getWeatherByCity(city.url)),
   );
-  sla.forEach((obj) => {
+  teste.forEach((obj) => {
     const getID = document.getElementById('cities');
     getID.appendChild(createCityElement(obj));
   });
